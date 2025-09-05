@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 資料庫
+  postgres:
+    image: postgres:15
+    container_name: construction_db
+    environment:
+      POSTGRES_DB: construction_management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - construction_network
+
+  # Redis 快取與任務佇列
+  redis:
+    image: redis:7-alpine
+    container_name: construction_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - construction_network
+
+  # 後端 API 服務
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: construction_backend
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: password123
+      DATABASE_NAME: construction_management
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: construction-management-secret-key-2024
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - construction_network
+    command: npm run start:dev
+
+  # 前端應用
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: construction_frontend
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - construction_network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  construction_network:
+    driver: bridge
