@@ -69,7 +69,7 @@ export class InquiriesService {
     return inquiry;
   }
 
-  async addResponse(inquiryId: string, createResponseDto: CreateInquiryResponseDto): Promise<InquiryResponse> {
+  async addResponse(inquiryId: string, createResponseDto: CreateInquiryResponseDto): Promise<InquiryResponse | null> {
     const inquiry = await this.findOne(inquiryId);
     
     // 檢查供應商是否已經回覆過
@@ -105,7 +105,7 @@ export class InquiriesService {
       await this.inquiryRepository.save(inquiry);
     }
 
-    return this.responseRepository.findOne({
+    return await this.responseRepository.findOne({
       where: { id: savedResponse.id },
       relations: ['vendor', 'items', 'items.inquiryItem'],
     });
@@ -121,8 +121,19 @@ export class InquiriesService {
         title: inquiry.title,
         project: inquiry.project.name,
       },
-      items: [],
-      vendors: [],
+      items: [] as Array<{
+        material: string;
+        quantity: number;
+        unit: string;
+        responses: { [key: string]: any };
+      }>,
+      vendors: [] as Array<{
+        name: string;
+        totalAmount: number;
+        paymentTerms: string;
+        deliveryDays: number;
+        evaluationScore: number;
+      }>,
       summary: {},
     };
 

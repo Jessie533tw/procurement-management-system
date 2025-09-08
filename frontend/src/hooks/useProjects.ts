@@ -3,7 +3,7 @@ import { projectsApi } from '@/lib/api';
 import type { Project, CreateProjectForm } from '@/types';
 
 export function useProjects() {
-  return useQuery({
+  return useQuery<Project[]>({
     queryKey: ['projects'],
     queryFn: projectsApi.getAll,
   });
