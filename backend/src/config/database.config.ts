@@ -4,13 +4,13 @@ import * as entities from '../entities';
 
 export const getDatabaseConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
   type: 'postgres',
-  host: configService.get('DATABASE_HOST', 'localhost'),
-  port: configService.get('DATABASE_PORT', 5432),
-  username: configService.get('DATABASE_USERNAME', 'postgres'),
-  password: configService.get('DATABASE_PASSWORD', 'password'),
-  database: configService.get('DATABASE_NAME', 'construction_management'),
+  host: configService.get('POSTGRES_HOST', 'localhost'),
+  port: configService.get('POSTGRES_PORT', 5432),
+  username: configService.get('POSTGRES_USER', 'postgres'),
+  password: configService.get('POSTGRES_PASSWORD', 'password'),
+  database: configService.get('POSTGRES_DATABASE', 'construction_management'),
   entities: Object.values(entities),
   synchronize: configService.get('NODE_ENV') !== 'production',
   logging: configService.get('NODE_ENV') === 'development',
-  ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
+  ssl: false,
 });
