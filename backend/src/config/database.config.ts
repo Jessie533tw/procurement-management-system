@@ -12,5 +12,5 @@ export const getDatabaseConfig = (configService: ConfigService): TypeOrmModuleOp
   entities: Object.values(entities),
   synchronize: configService.get('NODE_ENV') !== 'production',
   logging: configService.get('NODE_ENV') === 'development',
-  ssl: configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
+  ssl: configService.get('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
 });
