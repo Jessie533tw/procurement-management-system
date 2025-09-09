@@ -29,8 +29,8 @@ RUN npm ci --only=production && npm cache clean --force
 # 從 builder 階段複製建置結果
 COPY --from=builder /app/dist ./dist
 
-# 暴露端口
-EXPOSE 3001
+# 暴露端口 (Zeabur 會動態分配，這只是文檔用途)
+EXPOSE 3000
 
 # 啟動命令
 CMD ["npm", "run", "start:prod"]
