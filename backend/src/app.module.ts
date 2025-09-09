@@ -21,16 +21,26 @@ import { MaterialsModule } from './modules/materials/materials.module';
       inject: [ConfigService],
       useFactory: getDatabaseConfig,
     }),
-    BullModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        redis: {
-          host: configService.get('REDIS_HOST', 'localhost'),
-          port: configService.get('REDIS_PORT', 6379),
-          password: configService.get('REDIS_PASSWORD'),
-        },
-      }),
-    }),
+    // Note: BullModule commented out to avoid Redis dependency issues in deployment
+    // Uncomment when Redis service is available
+    // BullModule.forRootAsync({
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) => {
+    //     const redisUrl = configService.get('REDIS_URL');
+    //     
+    //     if (redisUrl) {
+    //       return { redis: redisUrl };
+    //     }
+    //     
+    //     return {
+    //       redis: {
+    //         host: configService.get('REDIS_HOST', 'localhost'),
+    //         port: configService.get('REDIS_PORT', 6379),
+    //         password: configService.get('REDIS_PASSWORD'),
+    //       },
+    //     };
+    //   },
+    // }),
     ProjectsModule,
     InquiriesModule,
     PurchaseOrdersModule,
