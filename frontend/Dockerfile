@@ -20,5 +20,5 @@ RUN ls -la public/
 # 暴露端口 (Zeabur 會動態分配)
 EXPOSE 3000
 
-# 啟動命令 - 直接調用 next，設定正確的 hostname 和 port
-CMD ["sh", "-c", "npx next start -p ${PORT:-3000} -H 0.0.0.0"]
+# 啟動命令 - 調試並使用動態端口
+CMD ["sh", "-c", "echo \"PORT environment variable: $PORT\" && npx next start -p ${PORT:-3000} -H 0.0.0.0"]
