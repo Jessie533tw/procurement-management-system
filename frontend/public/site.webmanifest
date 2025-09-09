@@ -1,0 +1,16 @@
+{
+  "name": "建設發包管理系統",
+  "short_name": "發包系統",
+  "description": "建設工程發包管理系統",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
