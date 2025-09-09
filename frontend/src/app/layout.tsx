@@ -18,6 +18,10 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "發包管理系統",
   description: "建設公司發包管理系統",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

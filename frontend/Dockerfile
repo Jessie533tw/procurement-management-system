@@ -14,6 +14,9 @@ COPY . .
 # 建立應用
 RUN npm run build
 
+# 確認 public 文件已複製
+RUN ls -la public/
+
 # 暴露端口 (Zeabur 會動態分配)
 EXPOSE 3000
 
