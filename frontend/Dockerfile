@@ -20,5 +20,5 @@ RUN ls -la public/
 # 暴露端口 (Zeabur 會動態分配)
 EXPOSE 3000
 
-# 啟動命令 - 調試並使用動態端口
-CMD ["sh", "-c", "echo \"PORT environment variable: $PORT\" && npx next start -p ${PORT:-3000} -H 0.0.0.0"]
+# 啟動命令 - 列出所有環境變數找出 Zeabur 的動態端口
+CMD ["sh", "-c", "echo \"=== All environment variables ===\" && env | sort && echo \"=== Starting Next.js ===\" && npx next start -p ${PORT:-3000} -H 0.0.0.0"]
