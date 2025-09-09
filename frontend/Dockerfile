@@ -21,4 +21,4 @@ RUN ls -la public/
 EXPOSE 3000
 
 # 啟動命令 - 使用動態端口
-CMD ["sh", "-c", "npm start"]
+CMD ["sh", "-c", "npm run start"]
