@@ -14,8 +14,8 @@ COPY . .
 # 建立應用
 RUN npm run build
 
-# 暴露端口
+# 暴露端口 (Zeabur 會動態分配)
 EXPOSE 3000
 
-# 啟動命令
-CMD ["npm", "start"]
+# 啟動命令 - 使用動態端口
+CMD ["sh", "-c", "npm start"]
