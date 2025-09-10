@@ -29,8 +29,11 @@ RUN npm ci --only=production && npm cache clean --force
 # 從 builder 階段複製建置結果
 COPY --from=builder /app/dist ./dist
 
-# 暴露端口 (Zeabur 會動態分配，這只是文檔用途)
-EXPOSE 3000
+# 建立執行時需要的目錄結構
+RUN mkdir -p logs
 
-# 啟動命令
-CMD ["npm", "run", "start:prod"]
+# 暴露端口 (Zeabur 會動態分配，這只是文檔用途)
+EXPOSE 3001
+
+# 啟動命令 - 確保監聽所有網路介面
+CMD ["sh", "-c", "echo \"Starting backend on port ${PORT:-3001}\" && npm run start:prod"]

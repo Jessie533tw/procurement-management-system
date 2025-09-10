@@ -17,4 +17,5 @@ RUN npm run build
 EXPOSE 3001
 ENV NODE_ENV=production
 
-CMD ["npm", "run", "start:prod"]
+# 啟動命令 - 確保監聽所有網路介面
+CMD ["sh", "-c", "echo \"Starting backend on port ${PORT:-3001}\" && npm run start:prod"]
