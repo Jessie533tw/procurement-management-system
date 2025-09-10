@@ -1,34 +1,21 @@
-# Build stage
-FROM node:18-alpine AS deps
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+FROM node:18-alpine
 
-# Builder stage
-FROM node:18-alpine AS builder
 WORKDIR /app
+
+# 複製 package.json 和 package-lock.json
 COPY package*.json ./
+
+# 安裝依賴
 RUN npm ci && npm cache clean --force
+
+# 複製源代碼
 COPY . .
+
+# 建立應用
 RUN npm run build
 
-# Runner stage
-FROM node:18-alpine AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copy standalone output
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
+# 暴露端口 (Zeabur 會動態分配)
 EXPOSE 3000
 
-# 啟動命令
-CMD ["node", "server.js"]
+# 啟動命令 - 使用 package.json 中的 start 腳本
+CMD ["npm", "start"]
